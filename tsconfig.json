@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "downlevelIteration": true
+  },
+  "include": [
+    "src/index.ts"
+  ]
+}
