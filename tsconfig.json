@@ -4,12 +4,12 @@
     "downlevelIteration": true,
     "module": "ESNext",
     "moduleResolution": "Node",
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "paths": {
-      "@kernel": [ "src/index.ts" ]
+      "@kernel": [ "./" ]
     }
   },
   "include": [
-    "src/index.ts"
+    "src/**/*.ts"
   ]
 }

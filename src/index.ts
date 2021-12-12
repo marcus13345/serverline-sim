@@ -20,9 +20,9 @@ const system = {
   handoff: ''
 }
 
-export const exec = (s: string, echo = true) => {
+export const exec = async (s: string, echo = true) => {
   if(echo) console.log(chalk.cyan('@ ') + chalk.ansi256(242)(s));
-  executor(...(s.split(' ')));
+  await executor(...(s.split(' ')));
 };
 
 serverline.init({
@@ -31,8 +31,14 @@ serverline.init({
 // serverline.setCompletion(['help', 'command1', 'command2', 'login', 'check', 'ping'])
 
 const executor = createExecutor({
-  create(module: string, name: string) {
-    console.log(s);
+  async create(module: string, name: string) {
+    try {
+      const functions = await import('./modules/' + module + '.js');
+      console.log(functions)
+    } catch(e) {
+      console.log(e);
+      e.trace();
+    }
   },
   quit() {
     console.log('Shutting down');
@@ -74,10 +80,13 @@ serverline.on('SIGINT', () => {
   exec('quit');
 });
 
-if(startupFile) {
-  const fullPath = resolve(startupFile);
-  const lines = readFileSync(fullPath).toString().split('\n').map(v => v.trim());
-  for(const line of lines) {
-    exec(line);
+
+(async () => {
+  if(startupFile) {
+    const fullPath = resolve(startupFile);
+    const lines = readFileSync(fullPath).toString().split('\n').map(v => v.trim());
+    for(const line of lines) {
+      await exec(line);
+    }
   }
-}
+})();
