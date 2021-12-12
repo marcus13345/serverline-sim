@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "noImplicitAny": true,
-    "downlevelIteration": true
+    "downlevelIteration": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "baseUrl": "./",
+    "paths": {
+      "@kernel": [ "src/index.ts" ]
+    }
   },
   "include": [
     "src/index.ts"

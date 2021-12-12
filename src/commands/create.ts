@@ -1,4 +1,4 @@
-import createExecutor from "./executor";
+import createExecutor from "./executor.js";
 
 export const create = createExecutor({
   pawn() {

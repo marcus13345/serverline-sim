@@ -1,6 +1,5 @@
 
 
-
 export default function createExecutor(functions: any) {
   return function execute(...options: string[]) {
     // console.log('λ', line);
@@ -8,6 +7,8 @@ export default function createExecutor(functions: any) {
     if(cmd in functions) {
       const toInvoke: (...args: any[]) => void = functions[cmd as keyof typeof functions];
       toInvoke(...args);
+    } else {
+      console.log('Unknown command', cmd);
     }
   }
 }
