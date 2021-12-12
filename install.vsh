@@ -1,4 +1,5 @@
 create systemd
 create sshd
-systemd add sshd exec sshd start
+invoke systemd add sshd invoke sshd start
 set handoff invoke systemd boot
+save

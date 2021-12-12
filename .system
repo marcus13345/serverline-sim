@@ -1,4 +1,13 @@
 {
-  "instances": {},
-  "handoff": ""
+  "handoff": "",
+  "instances": {
+    "C4A17A22AD4248858DB47161FE19B2EF": {
+      "config": {},
+      "module": "systemd"
+    },
+    "1B87C6B0E8814F55A7D916848AC3BB36": {
+      "config": {},
+      "module": "sshd"
+    }
+  }
 }

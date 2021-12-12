@@ -5,9 +5,11 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "baseUrl": "./src",
-    "paths": {
-      "@kernel": [ "./" ]
-    }
+    "outDir": "./dist",
+    "declaration": true
+  },
+  "paths": {
+    "@commands:executor": [""]
   },
   "include": [
     "src/**/*.ts"

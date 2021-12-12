@@ -1,6 +1,6 @@
 import telnet from 'telnet';
 
-import { exec } from '@kernel';
+import { exec } from '@kernel:base';
 
 export default {
   start() {
