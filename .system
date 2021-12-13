@@ -1,21 +1,17 @@
 {
   "handoff": "",
   "instances": {
-    "72C17CDFC5F943E0A41155D892419843": {
+    "50C60F4EF04D41B38A2EB573788829DA": {
       "config": {},
       "module": "systemd"
     },
-    "D2A1E19739BB4CC08DD7192164CD4D67": {
-      "config": {},
-      "module": "sshd"
-    },
-    "768C13637962402D803215C97D8F04CD": {
-      "config": {},
-      "module": "systemd"
-    },
-    "0CEB261DB70A4A51BC80E15D782D8D98": {
+    "C34D0DE00AB3454195E9249BF3596610": {
       "config": {},
       "module": "sshd"
     }
+  },
+  "aliases": {
+    "systemd": "50C60F4EF04D41B38A2EB573788829DA",
+    "sshd": "C34D0DE00AB3454195E9249BF3596610"
   }
 }

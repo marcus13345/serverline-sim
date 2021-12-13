@@ -1,14 +1,16 @@
 /// <reference path="./externals.d.ts" />
 
-// console.clear();
-
 import '@kernel:log-hook';
 import createExecutor from '@commands:executor';
+import create from '@commands:create';
+import ls from '@commands:ls';
+import save from '@commands:save';
 import * as uuid from 'uuid';
 import serverline from 'serverline';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
 import { resolve } from 'path'
 import chalk from 'chalk';
+import md5 from 'md5';
 
 const args = process.argv.slice(2);
 const [ startupFile ] = args;
@@ -20,9 +22,22 @@ type Instance = {
   functions: any;
 };
 
-const system = {
+export const system = {
   instances: new Map<string, Instance>(),
-  handoff: ''
+  handoff: '',
+  aliases: new Map<string, string>()
+}
+
+function checkpoint(string: string) {
+  console.log(chalk.black.bgAnsi256(204)('   ' + string + '   '));
+}
+
+export function autoColorString(string: string) {
+  let colorCode = 0;
+  for(const char of md5(string)) colorCode += char.charCodeAt(0);
+  colorCode %= 6 ** 3;
+  colorCode += 16;
+  return chalk.ansi256(colorCode)(string);
 }
 
 export const exec = async (s: string, echo = true) => {
@@ -30,71 +45,18 @@ export const exec = async (s: string, echo = true) => {
   await executor(...(s.split(' ')));
 };
 
-serverline.init({
-  prompt: chalk.cyan('λ ')
-});
-
-const kernel = {
-  async create(module: string, name: string) {
-    // TODO assert module.
-    try {
-      const imported = (await import('@builtin:' + module));
-      const functions = 'default' in imported ? imported.default : imported;
-      const id = name ?? uuid.v4().replace(/-/g, '').toUpperCase();
-      system.instances.set(id, {
-        config: {},
-        ram: {},
-        module: module,
-        functions
-      });
-      return id;
-    } catch(e) {
-      console.log(e);
-      e.trace();
-    }
-  },
+export const kernel = {
+  create: create,
   quit() {
     console.log('Shutting down');
-    serverline.close();
     setTimeout(() => process.exit(0), 0);
   },
-  ls(flags: any) {
-    if(flags) console.log(flags)
-
-    console.log('Instances', chalk.ansi256(242)('(' + system.instances.size + ')'));
-    for(const [k, v] of system.instances) {
-      let colorCode = 0;
-      for(const char of k) colorCode += char.charCodeAt(0);
-      colorCode %= 6 ** 3;
-      colorCode += 16;
-      console.log(
-        '    '
-        + chalk.ansi256(colorCode)(k.substring(0, 8))
-        + ':', JSON.stringify(v.config, null, 2).replace('\n', '    ').trim()
-      );
-    }
-  },
-  save() {
-    const timeStart = new Date().getTime();
-    const obj: any = {
-      handoff: system.handoff,
-      instances: {}
-    };
-    for(const [id, info] of system.instances.entries()) {
-      obj.instances[id] = {
-        config: info.config,
-        module: info.module
-      }
-    }
-    const systemString = JSON.stringify(obj, null, 2);
-    const fullPath = resolve('.system');
-    writeFileSync(fullPath, systemString);
-    const elapsed = new Date().getTime() - timeStart;
-    console.log('System saved to ' + fullPath + ' in ' + elapsed + ' ms')
-  },
+  ls: ls,
+  save: save,
   reset() {
     system.handoff = '';
     system.instances = new Map();
+    system.aliases = new Map();
     console.log('System has been reset.');
   },
   exec: exec,
@@ -112,35 +74,44 @@ const kernel = {
 
 const executor = createExecutor(kernel);
 
-serverline.on('line', (a: string) => {
-  if(a.trim() === "") return;
-  exec(a, false);
-})
- 
-serverline.on('SIGINT', () => {
-  exec('quit');
-});
-
-
-
 (async () => {
 
   if(existsSync('.system')) {
     const state: any = JSON.parse(readFileSync('.system').toString());
     system.handoff = state.handoff;
     for(const [id, info] of Object.entries<any>(state.instances)) {
-      await kernel.create(info.module, id);
+      const [alias] =
+      Object.entries(state.aliases)
+      .find(([,tryId]) => tryId === id)
+      ?? [undefined];
+      await kernel.create(info.module, alias, id);
       system.instances.get(id).config = info.config;
     }
+    checkpoint('System State Restored');
   }
 
   if(startupFile) {
     await exec('script ' + startupFile);
-    console.log(chalk.green('Script finished, exitting...'));
+    checkpoint('Script Finished');
     await exec('quit');
+  } else {
   }
-})()
 
+  serverline.init({
+    prompt: chalk.cyan('λ ')
+  });
+  serverline.setCompletion(Object.keys(kernel));
+  serverline.on('line', (a: string) => {
+    if(a.trim() === "") return;
+    exec(a, false);
+  });
+   
+  serverline.on('SIGINT', () => {
+    exec('quit');
+  });
+
+})().catch((e: Error) => {
+  console.error(e);
+});
+checkpoint('Kernel Loaded');
 import '@echo off';
-
-serverline.setCompletion(Object.keys(kernel))

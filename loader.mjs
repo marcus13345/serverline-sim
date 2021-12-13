@@ -16,6 +16,7 @@ let echo = true;
 export async function resolve(specifier, context, defaultResolver) {
   if(echo === false) {
   } else if(imports === 0) {
+    console.log(chalk.black.bgAnsi256(204)('   Welcome to Vogue System Runtime   '));
     console.log(chalk.green('#'), chalk.ansi256(242)('@kernel'))
   } else {
     console.log(chalk.green('#'), chalk.ansi256(242)(specifier));
@@ -26,13 +27,20 @@ export async function resolve(specifier, context, defaultResolver) {
   }
 
   const maps = {
-    'file:///boot': pathResolve(__dirname, 'src', 'index.ts'),
-    '@kernel:base': pathResolve(__dirname, 'src', 'index.ts'),
-    '@kernel:log-hook': pathResolve(__dirname, 'src', 'logHook.ts'),
+    'file:///boot':       pathResolve(__dirname, 'src', 'index.ts'),
+
+    '@kernel:base':       pathResolve(__dirname, 'src', 'index.ts'),
+    '@kernel:log-hook':   pathResolve(__dirname, 'src', 'logHook.ts'),
+
     '@commands:executor': pathResolve(__dirname, 'src', 'commands', 'executor.ts'),
-    '@builtin:systemd': pathResolve(__dirname, 'src', 'modules', 'systemd.ts'),
-    '@builtin:sshd': pathResolve(__dirname, 'src', 'modules', 'sshd.ts'),
-    '@echo off': pathResolve(__dirname, 'src', 'noop.ts')
+    '@commands:create':   pathResolve(__dirname, 'src', 'commands', 'create.ts'),
+    '@commands:ls':       pathResolve(__dirname, 'src', 'commands', 'ls.ts'),
+    '@commands:save':     pathResolve(__dirname, 'src', 'commands', 'save.ts'),
+
+    '@builtin:systemd':   pathResolve(__dirname, 'src', 'modules', 'systemd.ts'),
+    '@builtin:sshd':      pathResolve(__dirname, 'src', 'modules', 'sshd.ts'),
+
+    '@echo off':          pathResolve(__dirname, 'src', 'noop.ts')
   };
 
   const matches = Object.keys(maps).filter(map => specifier.startsWith(map));

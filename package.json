@@ -5,13 +5,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "(clear || cls) && node --no-warnings --loader ./loader.mjs /boot",
+    "start": "(clear || cls) && node --no-warnings --unhandled-rejections=strict --loader ./loader.mjs /boot",
     "tsc": "tsc"
   },
   "dependencies": {
+    "@types/md5": "^2.3.1",
     "@types/node": "^16.11.12",
     "@types/uuid": "^8.3.3",
     "chalk": "^5.0.0",
+    "md5": "^2.3.0",
     "serverline": "^1.5.0",
     "ssh2": "^1.5.0",
     "telnet": "^0.0.1",

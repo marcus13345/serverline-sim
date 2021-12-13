@@ -1,3 +1,4 @@
+reset
 create systemd
 create sshd
 invoke systemd add sshd invoke sshd start

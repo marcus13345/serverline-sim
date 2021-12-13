@@ -6,7 +6,8 @@
     "moduleResolution": "Node",
     "baseUrl": "./src",
     "outDir": "./dist",
-    "declaration": true
+    "declaration": true,
+    "allowSyntheticDefaultImports": true
   },
   "paths": {
     "@commands:executor": [""]
