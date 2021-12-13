@@ -9,7 +9,7 @@ export default function ls(flags: any) {
     console.log(
       '    '
       + autoColorString(k.substring(0, 4))
-      + ':', JSON.stringify(v.config, null, 2).replace('\n', '    ').trim()
+      + ':', JSON.stringify(v.config, null, 2).replace('\n', '\n    ').trim()
     );
   }
 }

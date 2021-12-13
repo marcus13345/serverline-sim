@@ -16,7 +16,7 @@
     "md5": "^2.3.0",
     "serverline": "^1.5.0",
     "ssh2": "^1.5.0",
-    "telnet": "^0.0.1",
+    "telnet": "git+https://github.com/TooTallNate/node-telnet.git#780340617e1f223de384cdfcb7cecf0a1a6f1159",
     "ts-node": "^10.4.0",
     "tsconfig-paths": "^3.12.0",
     "typescript": "^4.5.3",
