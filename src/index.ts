@@ -66,7 +66,7 @@ export const kernel = {
       location = system.aliases.get(location);
     }
     if(!system.instances.has(location)) {
-      throw new Error('INVOCATION_TARGET_DOES_NOT_EXIST');
+      throw new Error('INVOCATION_TARGET_DOES_NOT_EXIST: ' + location);
     }
     const instance = system.instances.get(location);
     if(!(fn in instance.functions)) {

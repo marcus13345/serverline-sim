@@ -1,4 +1,5 @@
 import { system, autoColorString } from '@kernel:base';
+import chalk from 'chalk';
 import * as uuid from 'uuid';
 
 export default async function create(module: string, name: string, id: string) {
@@ -11,7 +12,7 @@ export default async function create(module: string, name: string, id: string) {
   // undefined means no paramter given. this is treated as a default alias
   // otherise, null should be to create anonymous instances. only addressable
   // by their creator or by discovery protocols to come soon...
-  name = name === undefined ? module : null;
+  name = name === undefined ? module : name;
   if(system.aliases.has(name)) {
     if(name === module) {
       throw new Error('DEFAULT_MODULE_ALREADY_EXISTS');
@@ -31,6 +32,10 @@ export default async function create(module: string, name: string, id: string) {
   if(name) {
     system.aliases.set(name, id);
   }
-  console.log('Created instance of', autoColorString(module))
+  console.log('Created instance of', autoColorString(module));
+  if(name) {
+    console.log('   Alias:', autoColorString(name));
+  }
+  console.log('      Id:', chalk.ansi256(242)(id));
   return id;
 }

@@ -2,7 +2,9 @@
   "handoff": "invoke systemd boot",
   "instances": {
     "B7FFCD6C11974FC7A74509B6683D7420": {
-      "config": {},
+      "config": {
+        "sshd": "invoke sshd start"
+      },
       "module": "systemd"
     },
     "600F5B3828BC4D78BCBA375596F6898B": {
@@ -10,5 +12,8 @@
       "module": "sshd"
     }
   },
-  "aliases": {}
+  "aliases": {
+    "systemd": "B7FFCD6C11974FC7A74509B6683D7420",
+    "sshd": "600F5B3828BC4D78BCBA375596F6898B"
+  }
 }
