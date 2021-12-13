@@ -8,7 +8,10 @@ export default async function create(module: string, name: string, id: string) {
   if(name && (typeof name !== 'string' || name.trim() === '')) {
     throw new Error('IVALID_MODULE_ALIAS');
   }
-  name ??= module;
+  // undefined means no paramter given. this is treated as a default alias
+  // otherise, null should be to create anonymous instances. only addressable
+  // by their creator or by discovery protocols to come soon...
+  name = name === undefined ? module : null;
   if(system.aliases.has(name)) {
     if(name === module) {
       throw new Error('DEFAULT_MODULE_ALREADY_EXISTS');

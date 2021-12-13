@@ -54,14 +54,26 @@ export const kernel = {
   ls: ls,
   save: save,
   reset() {
+    // TODO add a user interaction requirement here... its kindof rm -rf...
     system.handoff = '';
     system.instances = new Map();
     system.aliases = new Map();
     console.log('System has been reset.');
   },
   exec: exec,
-  invoke(...a: any[]) {
-    console.log(a);
+  async invoke(location: string, fn: string, ...args: string[]) {
+    if(system.aliases.has(location)) {
+      location = system.aliases.get(location);
+    }
+    if(!system.instances.has(location)) {
+      throw new Error('INVOCATION_TARGET_DOES_NOT_EXIST');
+    }
+    const instance = system.instances.get(location);
+    if(!(fn in instance.functions)) {
+      throw new Error('FUNCTION_DOES_NOT_EXIST_ON_INVOCATION_TARGET');
+    }
+    const bound = instance.functions[fn].bind(instance);
+    await bound(...args);
   },
   async script(path: string) {
     const fullPath = resolve(path);
@@ -69,6 +81,9 @@ export const kernel = {
     for(const line of lines) {
       await exec(line);
     }
+  },
+  set(variable: string, ...rest: string[]) {
+    (system as any)[variable] = rest.join(' ');
   }
 };
 
@@ -94,24 +109,23 @@ const executor = createExecutor(kernel);
     await exec('script ' + startupFile);
     checkpoint('Script Finished');
     await exec('quit');
-  } else {
+    return;
   }
 
-  serverline.init({
-    prompt: chalk.cyan('λ ')
-  });
+  await exec(system.handoff);
+  checkpoint('Handoff Finished');
+
+  serverline.init({ prompt: chalk.cyan('λ ') });
   serverline.setCompletion(Object.keys(kernel));
   serverline.on('line', (a: string) => {
     if(a.trim() === "") return;
     exec(a, false);
   });
-   
-  serverline.on('SIGINT', () => {
-    exec('quit');
-  });
+  serverline.on('SIGINT', () => exec('quit'));
 
 })().catch((e: Error) => {
   console.error(e);
 });
+
 checkpoint('Kernel Loaded');
 import '@echo off';
