@@ -5,7 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node --no-warnings --loader ./loader.mjs /boot",
+    "start": "(clear || cls) && node --no-warnings --loader ./loader.mjs /boot",
     "tsc": "tsc"
   },
   "dependencies": {

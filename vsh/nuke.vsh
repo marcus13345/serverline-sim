@@ -1,0 +1,3 @@
+reset
+ls
+save
