@@ -28,6 +28,14 @@ export const system = {
   aliases: new Map<string, string>()
 }
 
+export function reverseAliasMap() {
+  const map = new Map<string, string>();
+  for(const [u, v] of system.aliases.entries()) {
+    map.set(v, u)
+  }
+  return map;
+}
+
 function checkpoint(string: string) {
   console.log(chalk.black.bgAnsi256(204)('   ' + string + '   '));
 }

@@ -1,15 +1,20 @@
-import { system, autoColorString } from '@kernel:base';
+import { system, autoColorString, reverseAliasMap } from '@kernel:base';
 import chalk from 'chalk';
 
 export default function ls(flags: any) {
   // if(flags) console.log(flags)
 
   console.log('Instances', chalk.ansi256(242)('(' + system.instances.size + ')'));
-  for(const [k, v] of system.instances) {
-    console.log(
-      '    '
-      + autoColorString(k.substring(0, 4))
-      + ':', JSON.stringify(v.config, null, 2).replace('\n', '\n    ').trim()
-    );
+  const aliases = reverseAliasMap();
+  for(const [id, instance] of system.instances) {
+    if(aliases.has(id)) {
+      console.log('  ' + autoColorString(aliases.get(id)) + chalk.ansi256(242)(' (' + id + ')'));
+    } else {
+      console.log('  ' + autoColorString(id.substring(0, 8)) + chalk.ansi256(242)(' (' + instance.module + ')'));
+    }
+
+    for(const [configKey, configVal] of Object.entries(instance.config)) {
+      console.log('    ' + chalk.ansi256(240)(configKey + ': ' + configVal));
+    }
   }
 }
