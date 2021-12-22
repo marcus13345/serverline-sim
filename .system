@@ -1,74 +1,74 @@
 {
   "handoff": "invoke systemd boot",
   "instances": {
-    "B7FFCD6C11974FC7A74509B6683D7420": {
+    "DFFB7B68E852432795778CB8BF17A738": {
       "config": {
         "sshd": "invoke sshd start",
-        "bandit-agent": "invoke explore run 10"
+        "explorer": "invoke explorer run 100"
       },
       "module": "systemd"
     },
-    "600F5B3828BC4D78BCBA375596F6898B": {
+    "0CBA2ACEE3C944E99E18BA4E8A5573A7": {
       "config": {},
       "module": "sshd"
     },
-    "51E27DEEE43B4731A700D1E01E4CD27A": {
+    "D6EC34E3247E467D9EF19CD0AE87D967": {
       "config": {
-        "variance": 3.3541307827308686,
-        "base": 8.708580891798924
+        "variance": 8.383608496894727,
+        "base": 5.5663848767187
       },
       "module": "n-arm-bandit/bandit"
     },
-    "05EA8268E28F4C9FAC7F8E5BE0ABAB5F": {
+    "EE5EE9787F364D8C99F6F5B9F720098F": {
       "config": {
-        "variance": 3.1710920949168986,
-        "base": 1.8243272668986266
+        "variance": 1.5285426366669341,
+        "base": 1.34822314541988
       },
       "module": "n-arm-bandit/bandit"
     },
-    "0F0B6AEB69754319A7E480E3989F7E54": {
+    "DE2D3F3E04E14C5FB962CF1FB8701048": {
       "config": {
-        "variance": 3.4606530100151267,
-        "base": 7.154055540463526
+        "variance": 6.473449022062456,
+        "base": 7.898604036597268
       },
       "module": "n-arm-bandit/bandit"
     },
-    "34064741B6324D9BBCEE0A1364F21220": {
+    "ABFDCE88EFE541758B9EB8DC44CEC059": {
       "config": {
-        "variance": 6.020933937139774,
-        "base": 3.6188560055328733
+        "variance": 5.018867179601183,
+        "base": 2.028356164860461
       },
       "module": "n-arm-bandit/bandit"
     },
-    "18461538E5A1487EBC9F54040295440A": {
+    "4B0EFA44DCD54285BB78F5F0C8360042": {
       "config": {
-        "variance": 5.750266712617811,
-        "base": 7.786595862237511
+        "variance": 5.480242072910966,
+        "base": 5.359127775729111
       },
       "module": "n-arm-bandit/bandit"
     },
-    "7E884FCACAC74FDF985D46B2BC937B5B": {
+    "F334E85472D94AA0931D60972E7EA0B0": {
       "config": {
         "bandits": [
-          "slot1",
-          "slot2",
-          "slot3",
-          "slot4",
-          "slot5"
+          "SLOT1",
+          "SLOT2",
+          "SLOT3",
+          "SLOT4",
+          "SLOT5"
         ]
       },
       "module": "n-arm-bandit/agent/exploreOnly"
     }
   },
   "aliases": {
-    "systemd": "B7FFCD6C11974FC7A74509B6683D7420",
-    "sshd": "600F5B3828BC4D78BCBA375596F6898B",
-    "slot1": "51E27DEEE43B4731A700D1E01E4CD27A",
-    "slot2": "05EA8268E28F4C9FAC7F8E5BE0ABAB5F",
-    "slot3": "0F0B6AEB69754319A7E480E3989F7E54",
-    "slot4": "34064741B6324D9BBCEE0A1364F21220",
-    "slot5": "18461538E5A1487EBC9F54040295440A",
-    "explore": "7E884FCACAC74FDF985D46B2BC937B5B"
+    "systemd": "DFFB7B68E852432795778CB8BF17A738",
+    "sshd": "0CBA2ACEE3C944E99E18BA4E8A5573A7",
+    "SLOT1": "D6EC34E3247E467D9EF19CD0AE87D967",
+    "SLOT2": "EE5EE9787F364D8C99F6F5B9F720098F",
+    "SLOT3": "DE2D3F3E04E14C5FB962CF1FB8701048",
+    "SLOT4": "ABFDCE88EFE541758B9EB8DC44CEC059",
+    "SLOT5": "4B0EFA44DCD54285BB78F5F0C8360042",
+    "explorer": "F334E85472D94AA0931D60972E7EA0B0"
   },
   "devMode": true
 }
