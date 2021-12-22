@@ -1,13 +1,14 @@
 import { system, autoColorString } from '@kernel:base';
 import chalk from 'chalk';
 import * as uuid from 'uuid';
+import { merge } from 'lodash';
 
 export default async function create(module: string, name: string, id: string) {
   if(!module || typeof module !== 'string' || module.trim() === '') {
     throw new Error('INVALID_MODULE_NAME');
   }
   if(name && (typeof name !== 'string' || name.trim() === '')) {
-    throw new Error('IVALID_MODULE_ALIAS');
+    throw new Error('INVALID_MODULE_ALIAS');
   }
   // undefined means no paramter given. this is treated as a default alias
   // otherise, null should be to create anonymous instances. only addressable
@@ -21,11 +22,24 @@ export default async function create(module: string, name: string, id: string) {
     }
   }
   const imported = (await import('@builtin:' + module));
-  const functions = 'default' in imported ? imported.default : imported;
+  const { default: moduleOptions, ...functions} = imported;
+  
+  const config: object = (function () {
+    if(moduleOptions && 'config' in moduleOptions) {
+      if(typeof moduleOptions.config === 'function') {
+        return moduleOptions.config();
+      } else {
+        return moduleOptions.config;
+      }
+    } else {
+      return {};
+    }
+  })();
+
   id ??= uuid.v4().replace(/-/g, '').toUpperCase();
   system.instances.set(id, {
     privateScope: {
-      config: {},
+      config,
       ram: {}
     },
     module: module,

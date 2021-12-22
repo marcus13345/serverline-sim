@@ -10,10 +10,50 @@
     "600F5B3828BC4D78BCBA375596F6898B": {
       "config": {},
       "module": "sshd"
+    },
+    "51E27DEEE43B4731A700D1E01E4CD27A": {
+      "config": {
+        "variance": 3.3541307827308686,
+        "base": 8.708580891798924
+      },
+      "module": "n-arm-bandit/bandit"
+    },
+    "05EA8268E28F4C9FAC7F8E5BE0ABAB5F": {
+      "config": {
+        "variance": 3.1710920949168986,
+        "base": 1.8243272668986266
+      },
+      "module": "n-arm-bandit/bandit"
+    },
+    "0F0B6AEB69754319A7E480E3989F7E54": {
+      "config": {
+        "variance": 3.4606530100151267,
+        "base": 7.154055540463526
+      },
+      "module": "n-arm-bandit/bandit"
+    },
+    "34064741B6324D9BBCEE0A1364F21220": {
+      "config": {
+        "variance": 6.020933937139774,
+        "base": 3.6188560055328733
+      },
+      "module": "n-arm-bandit/bandit"
+    },
+    "18461538E5A1487EBC9F54040295440A": {
+      "config": {
+        "variance": 5.750266712617811,
+        "base": 7.786595862237511
+      },
+      "module": "n-arm-bandit/bandit"
     }
   },
   "aliases": {
     "systemd": "B7FFCD6C11974FC7A74509B6683D7420",
-    "sshd": "600F5B3828BC4D78BCBA375596F6898B"
+    "sshd": "600F5B3828BC4D78BCBA375596F6898B",
+    "SLOT1": "51E27DEEE43B4731A700D1E01E4CD27A",
+    "SLOT2": "05EA8268E28F4C9FAC7F8E5BE0ABAB5F",
+    "SLOT3": "0F0B6AEB69754319A7E480E3989F7E54",
+    "SLOT4": "34064741B6324D9BBCEE0A1364F21220",
+    "SLOT5": "18461538E5A1487EBC9F54040295440A"
   }
 }
