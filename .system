@@ -3,7 +3,8 @@
   "instances": {
     "B7FFCD6C11974FC7A74509B6683D7420": {
       "config": {
-        "sshd": "invoke sshd start"
+        "sshd": "invoke sshd start",
+        "invoke": "invoke EXPLORE run 10"
       },
       "module": "systemd"
     },
@@ -45,6 +46,18 @@
         "base": 7.786595862237511
       },
       "module": "n-arm-bandit/bandit"
+    },
+    "7E884FCACAC74FDF985D46B2BC937B5B": {
+      "config": {
+        "bandits": [
+          "SLOT1",
+          "SLOT2",
+          "SLOT3",
+          "SLOT4",
+          "SLOT5"
+        ]
+      },
+      "module": "n-arm-bandit/agent/exploreOnly"
     }
   },
   "aliases": {
@@ -54,7 +67,8 @@
     "SLOT2": "05EA8268E28F4C9FAC7F8E5BE0ABAB5F",
     "SLOT3": "0F0B6AEB69754319A7E480E3989F7E54",
     "SLOT4": "34064741B6324D9BBCEE0A1364F21220",
-    "SLOT5": "18461538E5A1487EBC9F54040295440A"
+    "SLOT5": "18461538E5A1487EBC9F54040295440A",
+    "EXPLORE": "7E884FCACAC74FDF985D46B2BC937B5B"
   },
-  "devMode": true
+  "devMode": false
 }

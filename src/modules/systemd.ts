@@ -6,9 +6,9 @@ import { exec } from '@kernel:base';
 //   }
 // }
 
-export function boot() {
+export async function boot() {
   for(const [name, script] of Object.entries(this.config)) {
-    exec(script as string);
+    await exec(script as string);
   }
 }
 
