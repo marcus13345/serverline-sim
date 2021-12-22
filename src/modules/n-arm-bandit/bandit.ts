@@ -2,9 +2,15 @@
 export default {
   config: () => {
     return {
-      variance: Math.random() * 10,
-      base: Math.random() * 10
+      ...genBaseStats()
     };
+  }
+}
+
+function genBaseStats() {
+  return {
+    variance: Math.random() * 10,
+    base: Math.random() * 10
   }
 }
 
@@ -22,8 +28,10 @@ export function pull() {
 
 export function getAverageReward() {
   const avg = this.config.base;
-  this.config.variance = Math.random() * 10;
-  this.config.base = Math.random() * 10;
+  this.config = {
+    ...this.config,
+    ...genBaseStats()
+  }
   console.log('slots real reward was: ' + avg);
   return avg;
 }
