@@ -14,7 +14,18 @@ export default function ls(flags: any) {
     }
 
     for(const [configKey, configVal] of Object.entries(instance.privateScope.config)) {
-      console.log('    ' + chalk.ansi256(240)(configKey + ': ' + configVal));
+
+      const valueString = (function() {
+        if(typeof configVal === 'number') {
+          return chalk.ansi256(172)(configVal)
+        } else if (typeof configVal === 'string'){
+          return chalk.ansi256(39)('\'' + configVal + '\'')
+        } else {
+          return configVal;
+        }
+      })()
+
+      console.log('    ' + chalk.ansi256(240)(configKey + ': ' + valueString));
     }
   }
 }
