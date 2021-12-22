@@ -4,12 +4,13 @@ import { EventEmitter } from 'events'
 
 const events = new EventEmitter();
 
-process.stdout.write = (function(write): any {
-  return function(string: string, encoding: any, fileDescriptor: any) {
-    // const ansiCodes = /[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-    // appendFileSync('.log', string);
+type WriteFunction = typeof process.stdout.write;
+
+process.stdout.write = (function(write: WriteFunction): WriteFunction {
+  return function(string: string): boolean {
     events.emit('data', string);
-    write.apply(process.stdout, arguments);
+
+    return write.apply(process.stdout, arguments);
   };
 })(process.stdout.write);
 

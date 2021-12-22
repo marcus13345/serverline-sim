@@ -11,7 +11,7 @@ export default function save() {
   };
   for(const [id, info] of system.instances.entries()) {
     obj.instances[id] = {
-      config: info.config,
+      config: info.privateScope.config,
       module: info.module
     }
   }

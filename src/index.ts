@@ -1,5 +1,6 @@
 /// <reference path="./externals.d.ts" />
 
+import { Instance, ParsedSystemState } from '@kernel:base';
 import '@kernel:log-hook';
 import createExecutor from '@commands:executor';
 import create from '@commands:create';
@@ -15,12 +16,7 @@ import md5 from 'md5';
 const args = process.argv.slice(2);
 const [ startupFile ] = args;
 
-type Instance = {
-  config: any;
-  ram: any;
-  module: string;
-  functions: any;
-};
+export type Id = string;
 
 export const system = {
   instances: new Map<string, Instance>(),
@@ -80,7 +76,7 @@ export const kernel = {
     if(!(fn in instance.functions)) {
       throw new Error('FUNCTION_DOES_NOT_EXIST_ON_INVOCATION_TARGET');
     }
-    const bound = instance.functions[fn].bind(instance);
+    const bound = instance.functions[fn].bind(instance.privateScope);
     await bound(...args);
   },
   async script(path: string) {
@@ -100,15 +96,12 @@ const executor = createExecutor(kernel);
 (async () => {
 
   if(existsSync('.system')) {
-    const state: any = JSON.parse(readFileSync('.system').toString());
+    const state: ParsedSystemState = JSON.parse(readFileSync('.system').toString());
     system.handoff = state.handoff;
-    for(const [id, info] of Object.entries<any>(state.instances)) {
-      const [alias] =
-      Object.entries(state.aliases)
-      .find(([,tryId]) => tryId === id)
-      ?? [undefined];
+    for(const [id, info] of Object.entries(state.instances)) {
+      const [alias] = Object.entries(state.aliases).find(([,tryId]) => tryId === id) ?? [undefined];
       await kernel.create(info.module, alias, id);
-      system.instances.get(id).config = info.config;
+      system.instances.get(id).privateScope.config = info.config;
     }
     checkpoint('System State Restored');
   }

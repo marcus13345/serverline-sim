@@ -24,8 +24,10 @@ export default async function create(module: string, name: string, id: string) {
   const functions = 'default' in imported ? imported.default : imported;
   id ??= uuid.v4().replace(/-/g, '').toUpperCase();
   system.instances.set(id, {
-    config: {},
-    ram: {},
+    privateScope: {
+      config: {},
+      ram: {}
+    },
     module: module,
     functions
   });

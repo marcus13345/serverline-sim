@@ -1,8 +1,14 @@
 import { exec } from '@kernel:base';
 
+// export default {
+//   config: {
+
+//   }
+// }
+
 export function boot() {
   for(const [name, script] of Object.entries(this.config)) {
-    exec(script);
+    exec(script as string);
   }
 }
 

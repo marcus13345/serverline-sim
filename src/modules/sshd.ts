@@ -1,8 +1,10 @@
 import telnet from 'telnet';
-import { exec } from '@kernel:base';
+import { exec, Instance } from '@kernel:base';
 import log from '@kernel:log-hook';
 
-export function start() {
+
+
+export function start(this: Instance["privateScope"]) {
   telnet.createServer(function (client: any) {
   
     // make unicode characters work properly

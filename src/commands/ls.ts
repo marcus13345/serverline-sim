@@ -13,7 +13,7 @@ export default function ls(flags: any) {
       console.log('  ' + autoColorString(id.substring(0, 8)) + chalk.ansi256(242)(' (' + instance.module + ')'));
     }
 
-    for(const [configKey, configVal] of Object.entries(instance.config)) {
+    for(const [configKey, configVal] of Object.entries(instance.privateScope.config)) {
       console.log('    ' + chalk.ansi256(240)(configKey + ': ' + configVal));
     }
   }
