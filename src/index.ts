@@ -132,4 +132,4 @@ const executor = createExecutor(kernel);
 });
 
 checkpoint('Kernel Loaded');
-// import '@echo off';
+import '@echo off';

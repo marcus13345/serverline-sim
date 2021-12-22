@@ -18,6 +18,5 @@ export default function() {
   set v ...d         : Set a kernel variable
       v              : The name of the variable
    ...d              : The value (or values, space delimited)
-   
 `)
 }

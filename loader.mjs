@@ -3,6 +3,7 @@ import * as tsConfigPaths from "tsconfig-paths";
 import chalk from 'chalk';
 import { dirname, resolve as pathResolve } from 'path';
 import { fileURLToPath } from 'url';
+import { sep } from 'path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -38,8 +39,7 @@ export async function resolve(specifier, context, defaultResolver) {
     '@commands:save':     pathResolve(__dirname, 'src', 'commands', 'save.ts'),
     '@commands:help':     pathResolve(__dirname, 'src', 'commands', 'help.ts'),
 
-    '@builtin:systemd':   pathResolve(__dirname, 'src', 'modules', 'systemd.ts'),
-    '@builtin:sshd':      pathResolve(__dirname, 'src', 'modules', 'sshd.ts'),
+    '@builtin:':   (s) => pathResolve(__dirname, 'src', 'modules', s) + '.ts',
 
     '@echo off':          pathResolve(__dirname, 'src', 'noop.ts')
   };
@@ -51,8 +51,11 @@ export async function resolve(specifier, context, defaultResolver) {
     const match = matches[0];
     const replace = maps[match];
     const len = match.length;
-    specifier = replace + specifier.substring(len)
-
+    specifier = specifier.substring(len);
+    if(typeof replace === 'string')
+      specifier = replace + specifier
+    else if (typeof replace === 'function')
+      specifier = replace(specifier);
   } else if(matches.length > 1) {
     const error = `Ambiguous import
 specifier: ${specifier} matches:
