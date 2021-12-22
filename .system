@@ -4,7 +4,7 @@
     "B7FFCD6C11974FC7A74509B6683D7420": {
       "config": {
         "sshd": "invoke sshd start",
-        "invoke": "invoke EXPLORE run 10"
+        "bandit-agent": "invoke explore run 10"
       },
       "module": "systemd"
     },
@@ -50,11 +50,11 @@
     "7E884FCACAC74FDF985D46B2BC937B5B": {
       "config": {
         "bandits": [
-          "SLOT1",
-          "SLOT2",
-          "SLOT3",
-          "SLOT4",
-          "SLOT5"
+          "slot1",
+          "slot2",
+          "slot3",
+          "slot4",
+          "slot5"
         ]
       },
       "module": "n-arm-bandit/agent/exploreOnly"
@@ -63,12 +63,12 @@
   "aliases": {
     "systemd": "B7FFCD6C11974FC7A74509B6683D7420",
     "sshd": "600F5B3828BC4D78BCBA375596F6898B",
-    "SLOT1": "51E27DEEE43B4731A700D1E01E4CD27A",
-    "SLOT2": "05EA8268E28F4C9FAC7F8E5BE0ABAB5F",
-    "SLOT3": "0F0B6AEB69754319A7E480E3989F7E54",
-    "SLOT4": "34064741B6324D9BBCEE0A1364F21220",
-    "SLOT5": "18461538E5A1487EBC9F54040295440A",
-    "EXPLORE": "7E884FCACAC74FDF985D46B2BC937B5B"
+    "slot1": "51E27DEEE43B4731A700D1E01E4CD27A",
+    "slot2": "05EA8268E28F4C9FAC7F8E5BE0ABAB5F",
+    "slot3": "0F0B6AEB69754319A7E480E3989F7E54",
+    "slot4": "34064741B6324D9BBCEE0A1364F21220",
+    "slot5": "18461538E5A1487EBC9F54040295440A",
+    "explore": "7E884FCACAC74FDF985D46B2BC937B5B"
   },
-  "devMode": false
+  "devMode": true
 }

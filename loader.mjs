@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { dirname, resolve as pathResolve } from 'path';
 import { fileURLToPath } from 'url';
 import { sep } from 'path';
+import * as uuid from 'uuid';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -39,7 +40,7 @@ export async function resolve(specifier, context, defaultResolver) {
     '@commands:save':     pathResolve(__dirname, 'src', 'commands', 'save.ts'),
     '@commands:help':     pathResolve(__dirname, 'src', 'commands', 'help.ts'),
 
-    '@builtin:':   (s) => pathResolve(__dirname, 'src', 'modules', s) + '.ts',
+    '@builtin:':   (s) => pathResolve(__dirname, 'src', 'modules', s) + '.ts?hmr=' + uuid.v4(),
 
     '@echo off':          pathResolve(__dirname, 'src', 'noop.ts')
   };

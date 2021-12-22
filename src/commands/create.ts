@@ -21,20 +21,8 @@ export default async function create(module: string, name: string, id: string) {
       throw new Error('MODULE_ALIAS_TAKEN');
     }
   }
-  const imported = (await import('@builtin:' + module));
-  const { default: moduleOptions, ...functions} = imported;
-  
-  const config: object = (function () {
-    if(moduleOptions && 'config' in moduleOptions) {
-      if(typeof moduleOptions.config === 'function') {
-        return moduleOptions.config();
-      } else {
-        return moduleOptions.config;
-      }
-    } else {
-      return {};
-    }
-  })();
+
+  const [functions, config] = await loadModule(module);
 
   id ??= uuid.v4().replace(/-/g, '').toUpperCase();
   system.instances.set(id, {
@@ -54,4 +42,25 @@ export default async function create(module: string, name: string, id: string) {
   }
   console.log('      Id:', chalk.ansi256(242)(id));
   return id;
+}
+
+export async function loadModule(module: string): Promise<[functions: any, config: any]> {
+
+  const imported = (await import('@builtin:' + module));
+  const { default: moduleOptions, ...functions} = imported;
+  
+  const config: object = (function () {
+    if(moduleOptions && 'config' in moduleOptions) {
+      if(typeof moduleOptions.config === 'function') {
+        return moduleOptions.config();
+      } else {
+        return moduleOptions.config;
+      }
+    } else {
+      return {};
+    }
+  })();
+  return [
+    functions, config
+  ]
 }

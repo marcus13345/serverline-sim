@@ -3,16 +3,23 @@
 import { Instance, ParsedSystemState, System } from '@kernel:base';
 import '@kernel:log-hook';
 import createExecutor from '@commands:executor';
-import create from '@commands:create';
+import create, { loadModule } from '@commands:create';
 import ls from '@commands:ls';
 import save from '@commands:save';
 import help from '@commands:help';
 import * as uuid from 'uuid';
 import serverline from 'serverline';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
-import { resolve } from 'path'
+import { dirname, resolve } from 'path'
 import chalk from 'chalk';
 import md5 from 'md5';
+import { fileURLToPath } from 'url';
+import dar from 'chokidar';
+import _ from 'lodash';
+const { merge } = _;
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const builtins = resolve(__dirname, 'modules');
 
 const args = process.argv.slice(2);
 const [ startupFile ] = args;
@@ -119,6 +126,7 @@ const executor = createExecutor(kernel);
   if(existsSync('.system')) {
     const state: ParsedSystemState = JSON.parse(readFileSync('.system').toString());
     system.handoff = state.handoff;
+    system.devMode = state.devMode;
     for(const [id, info] of Object.entries(state.instances)) {
       const [alias] = Object.entries(state.aliases).find(([,tryId]) => tryId === id) ?? [undefined];
       await kernel.create(info.module, alias, id);
@@ -149,9 +157,37 @@ const executor = createExecutor(kernel);
   serverline.on('SIGINT', () => exec('quit'));
   console.log('For help, type help');
 
+  dar.watch(builtins, {
+    ignoreInitial: true,
+    cwd: builtins
+  }).on('all', async (type, path, stats) => {
+    const fqdn = path.substring(0, path.length - 3);
+    if(system.devMode) {
+      console.log(chalk.ansi256(202)('/ ') + chalk.ansi256(242)(fqdn));
+      try {
+        const [functions, config] = await loadModule(fqdn);
+        let count = 0;
+        for(const [id, instance] of system.instances.entries()) {
+          if(instance.module === fqdn) {
+            instance.functions = functions;
+            instance.privateScope.config = merge(config, instance.privateScope.config);
+            count ++;
+          }
+        }
+        console.log(chalk.ansi256(34)('/ ') + chalk.ansi256(242)('Reloaded ' + count + ' instance' + (count === 1 ? '' : 's')));;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      console.log('devmode is off');
+    }
+  });
+
 })().catch((e: Error) => {
   console.error(e);
+  process.exit(1);
 });
 
 checkpoint('Kernel Loaded');
 import '@echo off';
+

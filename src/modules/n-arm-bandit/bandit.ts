@@ -19,3 +19,11 @@ function randomNormal(width: number = 1, offset: number = 0) {
 export function pull() {
   return randomNormal(this.config.variance, this.config.base);
 }
+
+export function getAverageReward() {
+  const avg = this.config.base;
+  this.config.variance = Math.random() * 10;
+  this.config.base = Math.random() * 10;
+  console.log('slots real reward was: ' + avg);
+  return avg;
+}

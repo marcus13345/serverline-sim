@@ -8,7 +8,12 @@ import { exec } from '@kernel:base';
 
 export async function boot() {
   for(const [name, script] of Object.entries(this.config)) {
-    await exec(script as string);
+    try {
+      await exec(script as string);
+    } catch (e) {
+      console.log('systemd startup script \'' + name + '\' failed with error:')
+      console.log(e);
+    }
   }
 }
 
