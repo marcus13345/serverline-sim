@@ -61,7 +61,7 @@ export const exec = async (s: string, echo = true) => {
     }
   }
 
-  await executor(...args);
+  return await executor(...args);
 };
 
 export const kernel = {
@@ -92,7 +92,8 @@ export const kernel = {
       throw new Error('FUNCTION_DOES_NOT_EXIST_ON_INVOCATION_TARGET');
     }
     const bound = instance.functions[fn].bind(instance.privateScope);
-    await bound(...args);
+    const result = await bound(...args);
+    return result;
   },
   async script(path: string) {
     const fullPath = resolve(path);
@@ -138,9 +139,12 @@ const executor = createExecutor(kernel);
 
   serverline.init({ prompt: chalk.cyan('λ ') });
   serverline.setCompletion(Object.keys(kernel));
-  serverline.on('line', (a: string) => {
+  serverline.on('line', async (a: string) => {
     if(a.trim() === "") return;
-    exec(a, false);
+    const res = await exec(a, false);
+    if(res !== undefined) {
+      console.log(chalk.ansi256(211)('< ' + res));
+    }
   });
   serverline.on('SIGINT', () => exec('quit'));
   console.log('For help, type help');

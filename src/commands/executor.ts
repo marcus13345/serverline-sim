@@ -5,9 +5,10 @@ export default function createExecutor(functions: any) {
     const [cmd, ...args] = options;
     if(cmd in functions) {
       const toInvoke: (...args: any[]) => void | Promise<void> = functions[cmd as keyof typeof functions];
-      await toInvoke(...args);
+      return await toInvoke(...args);
     } else {
       console.log('Unknown command', cmd);
+      return;
     }
   }
 }

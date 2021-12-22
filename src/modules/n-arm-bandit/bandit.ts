@@ -17,5 +17,5 @@ function randomNormal(width: number = 1, offset: number = 0) {
 }
 
 export function pull() {
-  console.log(randomNormal(this.config.variance, this.config.base));
+  return randomNormal(this.config.variance, this.config.base);
 }
