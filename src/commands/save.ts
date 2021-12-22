@@ -1,13 +1,14 @@
-import { system } from '@kernel:base';
+import { system, ParsedSystemState } from '@kernel:base';
 import { resolve } from 'path';
 import { writeFileSync } from 'fs';
 
 export default function save() {
   const timeStart = new Date().getTime();
-  const obj: any = {
+  const obj: ParsedSystemState = {
     handoff: system.handoff,
     instances: {},
-    aliases: {}
+    aliases: {},
+    devMode: system.devMode
   };
   for(const [id, info] of system.instances.entries()) {
     obj.instances[id] = {

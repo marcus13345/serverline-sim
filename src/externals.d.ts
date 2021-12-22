@@ -17,6 +17,7 @@ declare module "@kernel:base" {
   type Id = string;
   type ParsedSystemState = {
     handoff: string,
+    devMode: boolean,
     instances: {
       [id: Id]: {
         config: any,
@@ -31,6 +32,7 @@ declare module "@kernel:base" {
     aliases: Map<string, string>;
     instances: Map<string, Instance>;
     handoff: string;
+    devMode: boolean;
   }
   const system: System;
 }

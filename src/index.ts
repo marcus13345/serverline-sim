@@ -1,6 +1,6 @@
 /// <reference path="./externals.d.ts" />
 
-import { Instance, ParsedSystemState } from '@kernel:base';
+import { Instance, ParsedSystemState, System } from '@kernel:base';
 import '@kernel:log-hook';
 import createExecutor from '@commands:executor';
 import create from '@commands:create';
@@ -17,12 +17,11 @@ import md5 from 'md5';
 const args = process.argv.slice(2);
 const [ startupFile ] = args;
 
-export type Id = string;
-
-export const system = {
+export const system: System = {
   instances: new Map<string, Instance>(),
   handoff: '',
-  aliases: new Map<string, string>()
+  aliases: new Map<string, string>(),
+  devMode: false
 }
 
 export function reverseAliasMap() {
@@ -47,7 +46,22 @@ export function autoColorString(string: string) {
 
 export const exec = async (s: string, echo = true) => {
   if(echo) console.log(chalk.cyan('@ ') + chalk.ansi256(242)(s));
-  await executor(...(s.split(' ')));
+
+  const args: (string | number | boolean)[] = [];
+  for(const arg of s.split(' ')) {
+    const asNum = parseFloat(arg);
+    const isTrue = arg.toLowerCase() === 'true';
+    const isBoolean = isTrue || arg.toLowerCase() === 'false';
+    if(isBoolean) {
+      args.push(isTrue);
+    } else if(!isNaN(asNum)) {
+      args.push(asNum)
+    } else {
+      args.push(arg);
+    }
+  }
+
+  await executor(...args);
 };
 
 export const kernel = {
@@ -87,8 +101,12 @@ export const kernel = {
       await exec(line);
     }
   },
-  set(variable: string, ...rest: string[]) {
-    (system as any)[variable] = rest.join(' ');
+  set(variable: string, ...rest: any) {
+    if(rest.length > 1) {
+      (system as any)[variable] = rest.join(' ');
+    } else {
+      (system as any)[variable] = rest[0];
+    }
   },
   help: help
 };
