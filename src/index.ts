@@ -6,6 +6,7 @@ import createExecutor from '@commands:executor';
 import create from '@commands:create';
 import ls from '@commands:ls';
 import save from '@commands:save';
+import help from '@commands:help';
 import * as uuid from 'uuid';
 import serverline from 'serverline';
 import { existsSync, readFileSync, writeFileSync } from 'fs';
@@ -88,7 +89,8 @@ export const kernel = {
   },
   set(variable: string, ...rest: string[]) {
     (system as any)[variable] = rest.join(' ');
-  }
+  },
+  help: help
 };
 
 const executor = createExecutor(kernel);
@@ -123,10 +125,11 @@ const executor = createExecutor(kernel);
     exec(a, false);
   });
   serverline.on('SIGINT', () => exec('quit'));
+  console.log('For help, type help');
 
 })().catch((e: Error) => {
   console.error(e);
 });
 
 checkpoint('Kernel Loaded');
-import '@echo off';
+// import '@echo off';

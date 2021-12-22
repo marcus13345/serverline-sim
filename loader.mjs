@@ -36,6 +36,7 @@ export async function resolve(specifier, context, defaultResolver) {
     '@commands:create':   pathResolve(__dirname, 'src', 'commands', 'create.ts'),
     '@commands:ls':       pathResolve(__dirname, 'src', 'commands', 'ls.ts'),
     '@commands:save':     pathResolve(__dirname, 'src', 'commands', 'save.ts'),
+    '@commands:help':     pathResolve(__dirname, 'src', 'commands', 'help.ts'),
 
     '@builtin:systemd':   pathResolve(__dirname, 'src', 'modules', 'systemd.ts'),
     '@builtin:sshd':      pathResolve(__dirname, 'src', 'modules', 'sshd.ts'),

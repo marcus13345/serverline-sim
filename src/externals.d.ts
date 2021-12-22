@@ -39,4 +39,5 @@ declare module "@commands:executor";
 declare module "@commands:create";
 declare module "@commands:ls";
 declare module "@commands:save";
+declare module "@commands:help";
 declare module "@echo off";
